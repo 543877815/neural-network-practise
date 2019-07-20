@@ -40,8 +40,6 @@ The dataset is divided into five training batches and one test batch, each with 
 
 实现见[neural-network.ipynb](./neural-network.ipynb)
 
-
-
 10000次训练，测试集准确率46.4%
 
 ### 卷积神经网络
@@ -74,6 +72,8 @@ The dataset is divided into five training batches and one test batch, each with 
 
 10000次训练，测试机准确率64.9%
 
+## 可视化学习与迁移学习
+
 ### tensorboard
 
 实现见[vgg-tensorboard.ipynb](./vgg-tensorboard.ipynb)
@@ -87,10 +87,10 @@ tensorboard --logdir=train:'[train-path]',test:'[test-path]'
 实现见[vgg-tensorboard-fine-tune.ipynb](./vgg-tensorboard-fine-tune.ipynb)
 
 1. save models (third party/myself)
-
 2. restore models checkpoints (断点恢复)
-
 3. keep some layers fixed.
+
+## 调参
 
 ### activation-initializer-optimizer
 
@@ -119,3 +119,23 @@ tensorboard --logdir=train:'[train-path]',test:'[test-path]'
 - train_op = tf.train.GredientDescentOptimizer(1e-4).minimize(loss) # *12.35%* train 100k
 
 - train_op = tf.train.MomentumOptimizer(learning_rate=1e-4, momentum).minimize(loss) *#35.75%* train 100k
+
+### data augmentation
+
+实现见[vgg-tensorboard-data_aug.ipynb](./vgg-tensorboard-data_aug.ipynb)
+
+- data_aug_1 = tf.image.random_flip_left_right(x_single_image)
+- data_aug_2 = tf.image.random_brightness(data_aug_1, max_delta=65)
+- data_aug_3 = tf.image.random_contrast(data_aug_2, lower=0.2, upper=1.8)
+
+train10000次，测试集准确率68.25%
+
+train100000次，测试集准确率78.05%
+
+### deeper layers
+
+实现见[vgg-tensorboard-data_aug_deeper-bn.ipynb](./vgg-tensorboard-data_aug_deeper-bn.ipynb)（没跑）
+
+### batch normalization
+
+实现见[vgg-tensorboard-data_aug_deeper-bn.ipynb](./vgg-tensorboard-data_aug_deeper-bn.ipynb)（准确率上不去，感觉实现有问题？）
