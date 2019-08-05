@@ -164,3 +164,6 @@ train 100000次，测试机准确率82.450%
 
 ## 3.文本分类
 
+### 数据
+
+链接：https://pan.baidu.com/s/1GdRF6th_N2L7TVaC8YYTSg 提取码：uraj 
