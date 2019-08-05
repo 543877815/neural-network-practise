@@ -4,9 +4,11 @@
 
 ## 虚拟环境的配置
 
-见[]
+见[我的博客](https://543877815.github.io/2019/07/06/%E4%BB%8Epython%E5%BC%80%E5%A7%8B%E7%9A%84%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E6%97%A5%E5%BF%97/)
 
-## 数据
+## 1. 分类任务
+
+### 数据
 
 The CIFAR-10 dataset consists of 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images. 
 
@@ -16,9 +18,9 @@ The dataset is divided into five training batches and one test batch, each with 
 
 数据类型例子见[data introduction.ipynb](./data introduction.ipynb)
 
-## 实现
+### 实现
 
-### 逻辑斯蒂二分类
+#### 逻辑斯蒂二分类
 
 对类别0和1进行分类，实现见[neuron.ipynb](./neuron.ipynb)
 
@@ -28,7 +30,7 @@ The dataset is divided into five training batches and one test batch, each with 
 
 数据归一化后测试集准确率82%
 
-### 单层神经网络
+#### 单层神经网络
 
 逻辑斯蒂，softmax多分类
 
@@ -36,45 +38,45 @@ The dataset is divided into five training batches and one test batch, each with 
 
 100000次训练，测试集准确率31.6%
 
-### 多层神经网络
+#### 多层神经网络
 
 实现见[neural-network.ipynb](./neural-network.ipynb)
 
 10000次训练，测试集准确率46.4%
 
-### 卷积神经网络
+#### 卷积神经网络
 
 实现见[convnet.ipynb](./convnet.ipynb)
 
 10000次训练，测试集准确率66.3%
 
-### vgg-net
+#### vgg-net
 
 实现见[vgg-net.ipynb](./vgg-net.ipynb)
 
 10000次训练，测试集准确率73.2%
 
-### res-net
+#### res-net
 
 实现见[res-net.ipynb](./res-net.ipynb)
 
 10000次训练，测试集准确率76.3%
 
-### inception-net
+#### inception-net
 
 实现见[inception-net.ipynb](./inception-net.ipynb)
 
 10000次训练，测试集准确率73.5%
 
-### mobile-net
+#### mobile-net
 
 实现见[mobile-net.ipynb](./mobile-net.ipynb)
 
 10000次训练，测试机准确率64.9%
 
-## 可视化学习与迁移学习
+### 可视化学习与迁移学习
 
-### tensorboard
+#### tensorboard
 
 实现见[vgg-tensorboard.ipynb](./vgg-tensorboard.ipynb)
 
@@ -82,7 +84,7 @@ The dataset is divided into five training batches and one test batch, each with 
 tensorboard --logdir=train:'[train-path]',test:'[test-path]'
 ```
 
-### fine-tune
+#### fine-tune
 
 实现见[vgg-tensorboard-fine-tune.ipynb](./vgg-tensorboard-fine-tune.ipynb)
 
@@ -90,9 +92,9 @@ tensorboard --logdir=train:'[train-path]',test:'[test-path]'
 2. restore models checkpoints (断点恢复)
 3. keep some layers fixed.
 
-## 调参
+### 调参
 
-### activation-initializer-optimizer
+#### activation-initializer-optimizer
 
 实现见[vgg-tensorboard-activation-initializer-optimizer.ipynb](./vgg-tensorboard-activation-initializer-optimizer.ipynb)
 
@@ -104,23 +106,23 @@ tensorboard --logdir=train:'[train-path]',test:'[test-path]'
 
 - optimizer: Adam, Momentum, Gradient Descent.
 
-一些效果（并没有实际测试）：  
+一些效果：  
 
-- flatten = convnet(x_image, tf.nn.relu) # train 10k: *73.35%*
+- flatten = convnet(x_image, tf.nn.relu) # train 10k: *73.9%*
 
-- flatten = convnet(x_image, tf.nn.relu, None)  # train *76.53%* 100k train
+- flatten = convnet(x_image, tf.nn.relu, None)  # train *74.8%* 100k train
 
-- flatten = convnet(x_image, tf.nn.relu, tf.truncated_normal_initializer(stddev=0.02))  # *78.04%* 100k train
+- flatten = convnet(x_image, tf.nn.relu, tf.truncated_normal_initializer(stddev=0.02))  # *72.9%* 100k train
 
-- flatten = convnet(x_image, tf.nn.relu, tf.keras.initializers.he_normal)  # *71.52%* 100k train
+- flatten = convnet(x_image, tf.nn.relu, tf.keras.initializers.he_normal)  # *73.1%* 100k train
 
-- flatten = convnet(x_image, tf.nn.sigmoid) # train 10k: *53.39%*
+- flatten = convnet(x_image, tf.nn.sigmoid) # train 10k: *69.05%*
 
-- train_op = tf.train.GredientDescentOptimizer(1e-4).minimize(loss) # *12.35%* train 100k
+- train_op = tf.train.GradientDescentOptimizer(1e-4).minimize(loss) # *44.20%* train 100k
 
-- train_op = tf.train.MomentumOptimizer(learning_rate=1e-4, momentum).minimize(loss) *#35.75%* train 100k
+- train_op = tf.train.MomentumOptimizer(learning_rate=1e-4, momentum=0.9).minimize(loss) *71.8%* train 100k
 
-### data augmentation
+#### data augmentation
 
 实现见[vgg-tensorboard-data_aug.ipynb](./vgg-tensorboard-data_aug.ipynb)
 
@@ -132,10 +134,33 @@ train10000次，测试集准确率68.25%
 
 train100000次，测试集准确率78.05%
 
-### deeper layers
+#### deeper layers
 
-实现见[vgg-tensorboard-data_aug_deeper-bn.ipynb](./vgg-tensorboard-data_aug_deeper-bn.ipynb)（没跑）
+实现见[vgg-tensorboard-data_aug_deeper-bn.ipynb](./vgg-tensorboard-data_aug_deeper-bn.ipynb)
 
-### batch normalization
+train 100000次，测试集准确率73.55%
 
-实现见[vgg-tensorboard-data_aug_deeper-bn.ipynb](./vgg-tensorboard-data_aug_deeper-bn.ipynb)（准确率上不去，感觉实现有问题？）
+#### batch normalization
+
+实现见[vgg-tensorboard-data_aug_deeper-bn.ipynb](./vgg-tensorboard-data_aug_deeper-bn.ipynb)
+
+train 100000次，测试机准确率82.450%
+
+## 2. 图像风格转换
+
+### 数据
+
+预训练模型VGG16，[github](https://github.com/machrisaa/tensorflow-vgg)，download from [here](https://mega.nz/#!YU1FWJrA!O1ywiCS2IiOlUCtCpI6HTJOMrneN-Qdv3ywQP5poecM)
+
+数据格式见[vgg16_content.ipynb](./vgg16_content.ipynb)
+
+### 实现
+
+实现见[style_transfer.ipynb](./style_transfer.ipynb)
+
+原始图片见[run_style_transfer](/run_style_transfer)
+
+效果见[run_style_transfer](/run_style_transfer)（没有调参所以结果一般）
+
+## 3.文本分类
+

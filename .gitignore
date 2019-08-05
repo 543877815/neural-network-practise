@@ -1,1 +1,4 @@
 *.npy
+./data/*
+
+.ipynb_checkpoints/*
