@@ -167,3 +167,126 @@ train 100000次，测试机准确率82.450%
 ### 数据
 
 链接：https://pan.baidu.com/s/1GdRF6th_N2L7TVaC8YYTSg 提取码：uraj 
+
+### 预处理
+
+[pre-processing.ipynb](./pre-processing.ipynb)
+
+### text-rnn
+
+实现见[text-rnn.ipynb](/text-rnn.ipynb)
+
+架构：
+
+```python
+# 构建计算图——LSTM模型
+#      embedding
+#      LSTM
+#      fc
+#      train_op
+# 训练流程代码
+# 数据集封装
+#      api: next_batch(batch_size)
+# 词表封装
+#      api: sentence2id(text_sentence): 句子转换id
+# 类别封装
+#      api: category2id(text_category)
+```
+
+训练10000次准确率：
+
+Train: 99.7%
+
+Valid: 92.7%
+
+Test:  93.2%
+
+### LSTM网络结构
+
+实现见[text-rnn-pure-lstm.ipynb](./text-rnn-pure-lstm.ipynb)
+
+keycode：
+
+```python
+with tf.variable_scope('lstm_nn', initializer = lstm_init):
+    """
+    cells = []
+    for i in range(hps.num_lstm_layers):
+        cell = tf.contrib.rnn.BasicLSTMCell(
+            hps.num_lstm_nodes[i],
+            state_is_tuple = True)
+        cell = tf.contrib.rnn.DropoutWrapper(
+            cell,
+            output_keep_prob = keep_prob)
+        cells.append(cell)
+    cell = tf.contrib.rnn.MultiRNNCell(cells)
+    
+    initial_state = cell.zero_state(batch_size, tf.float32)
+    # rnn_outputs: [batch_size, num_timesteps, lstm_outputs[-1]]
+    rnn_outputs, _ = tf.nn.dynamic_rnn(cell, embed_inputs, initial_state = initial_state)
+    last = rnn_outputs[:, -1, :]
+    """
+    # 输入门
+    with tf.variable_scope('inputs'):
+        ix, ih, ib = _generate_params_for_lstm_cell(
+            x_size = [hps.num_embedding_size, hps.num_lstm_nodes[0]],
+            h_size = [hps.num_lstm_nodes[0], hps.num_lstm_nodes[0]],
+            bias_size = [1, hps.num_lstm_nodes[0]]
+        )
+        
+    # 输出门
+    with tf.variable_scope('outputs'):
+        ox, oh, ob = _generate_params_for_lstm_cell(
+            x_size = [hps.num_embedding_size, hps.num_lstm_nodes[0]],
+            h_size = [hps.num_lstm_nodes[0], hps.num_lstm_nodes[0]],
+            bias_size = [1, hps.num_lstm_nodes[0]]
+        )
+    
+    # 遗忘门
+    with tf.variable_scope('forget'):
+        fx, fh, fb = _generate_params_for_lstm_cell(
+            x_size = [hps.num_embedding_size, hps.num_lstm_nodes[0]],
+            h_size = [hps.num_lstm_nodes[0], hps.num_lstm_nodes[0]],
+            bias_size = [1, hps.num_lstm_nodes[0]]
+        )
+    
+    # 中间层
+    with tf.variable_scope('memory'):
+        cx, ch, cb = _generate_params_for_lstm_cell(
+            x_size = [hps.num_embedding_size, hps.num_lstm_nodes[0]],
+            h_size = [hps.num_lstm_nodes[0], hps.num_lstm_nodes[0]],
+            bias_size = [1, hps.num_lstm_nodes[0]]
+        )
+    state = tf.Variable(
+        tf.zeros([batch_size, hps.num_lstm_nodes[0]]),
+        trainable = False
+    )
+    h = tf.Variable(
+        tf.zeros([batch_size, hps.num_lstm_nodes[0]]),
+        trainable = False
+    )
+    for i in range(num_timesteps):
+        # [batch_size, 1, embed_size]
+        embed_input = embed_inputs[:, i, :]
+        embed_input = tf.reshape(embed_input, [batch_size, hps.num_lstm_nodes[0]])
+        forget_gate = tf.sigmoid(tf.matmul(embed_input, fx) + tf.matmul(h, fh) + fb)
+        input_gate = tf.sigmoid(tf.matmul(embed_input, ix) + tf.matmul(h, ih) + ib)
+        output_gate = tf.sigmoid(tf.matmul(embed_input, ox) + tf.matmul(h, oh) + ob)
+        mid_state = tf.tanh(tf.matmul(embed_input, cx) + tf.matmul(h, ch) + cb)
+        state = mid_state * input_gate + state * forget_gate
+        h = output_gate * tf.tanh(state)
+    last = h
+```
+### text-cnn
+
+实现见[text-cnn.ipynb](./text-cnn.ipynb)
+
+训练10000次准确率：
+
+Train: 100%
+
+Valid: 95.7%
+
+Test:  95.2%
+
+## 4.图像生成文本
