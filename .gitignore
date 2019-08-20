@@ -1,4 +1,5 @@
 *.npy
 /data/*
-
+/flickr30k/*
 /.ipynb_checkpoints/*
+/inception_v3/*
