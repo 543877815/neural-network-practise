@@ -290,3 +290,20 @@ Valid: 95.7%
 Test:  95.2%
 
 ## 4.图像生成文本
+
+### 数据集
+
+[flickr30k_images](http://shannon.cs.illinois.edu/DenotationGraph/data/index.html)
+
+### 模型
+
+[inception v3(http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz)](http://download.tensorflow.org/models/image/imagenet/inception-2015-12-05.tgz)
+
+### 词表生成
+
+见[generate_vocab.ipynb](./generate_vocab.ipynb)
+
+### 训练
+
+见[image_caption_train.ipynb](./image_caption_train.ipynb)
+
