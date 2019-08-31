@@ -307,3 +307,17 @@ Test:  95.2%
 
 见[image_caption_train.ipynb](./image_caption_train.ipynb)
 
+## 5.对抗生成网络
+
+### 数据集
+
+tensorflow 自带MNIST手写数字数据集
+
+### 模型
+
+[dc_gan.ipynb](./dc_gan.ipynb)
+
+### 结果
+
+训练10000次见[local_run](./local_run)
+
